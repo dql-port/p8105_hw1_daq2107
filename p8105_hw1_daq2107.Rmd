@@ -7,13 +7,8 @@ output: github_document
 
 ## Loading necessary libraries for this assignment:
 
-##### what does the descriptions within {} do???
-
-##### ask about RData file...
-
 ```{r libraries}
 library(tidyverse)
-library(skimr)
 ```
 
 ## Problem 1
@@ -32,28 +27,33 @@ penguins #General observation of the data frame
 nrow(penguins) #Obtaining number of rows
 ncol(penguins) #Obtaining number of columns
 
-skim(penguins$flipper_length_mm) #Using the 'skimr' package to obtain mean flipper length
+#To obtain the mean value of the flipper length, we use the pull function and remove the missing values using 'na.rm':
 
+mean(pull(penguins, flipper_length_mm), na.rm = TRUE)
+
+sd(pull(penguins, flipper_length_mm), na.rm = TRUE)
 ```
 
 #### what do we say about 'important values of variables'?
-#### okay to use 'skmr' package or do we need to just use mean?
 
 **Description:** We see that the 'penguins' data set is a tibble containing 344 observations and 8 variables, as confirmed by the 'nrow' and 'ncol' functions (344 rows and 8 columns). Each observation corresponds to a penguin, whereas the variables describe their location ('island' variable), their species, sex, year of  physical characteristics of each penguin, including their bills' length and depth (mm), their flippers' length (mm), and overall body mass (g).
 
 Additionally, we see that the mean flipper length for all observations in the data set is 200.9152 mm.
 
+
+### general descriptors of the flipper length and bill mean sd
+
 We can also create a scatter plot of flipper length (y) vs. bill length (x):
 
 ```{r scatter_plot_penguins}
-#Using ggplot (part of 'tidyverse' package):
+#Using ggplot (part of 'tidyverse' package). Note that ggplot automatically removes NA values from scatter plot:
 
 ggplot(penguins, aes(x = bill_length_mm, 
                      y = flipper_length_mm,
                      color = species)) +  #Coloring per 'species' variable
     geom_point() +
   
-#Adding labels to my scatter plot (I know this code per previous experience with ggplot)
+#Adding labels to my scatter plot (I know this code per previous experience with ggplot in another class)
   
   labs(title = "Penguin Flipper Length vs. Bill Length",
        x = "Bill Length (mm)",
@@ -67,7 +67,6 @@ ggsave(filename = "DSI_HW1_Problem1.jpg")
 
 ```
 
-##### jpg or png???
 #### do we need to address the missing values???
 #### okay extra ggplot things considering my previous class????
 #### email reminding him older R version. to Gustavo???
@@ -80,6 +79,8 @@ We can create a data frame using the 'tibble' function (part of the 'tidyverse' 
 
 
 ```{r creating_df}
+set.seed(0)
+
 new_df = tibble(
   vec_sample = rnorm(10, mean = 1), #Random sample of 10 and mean equal to 1
   vec_log = vec_sample > 0, #Logical vector checking if the sample's elements are above zero
@@ -99,24 +100,27 @@ mean(pull(new_df, vec_factor))
 
 ```
 
-We can see from the output above that we are able to take the mean for our random sample (mean = 0.7015389) and logical vectors (mean = 0.7). However, as expected, we cannot take the means of our character and factor vectors since they are not numerical.
+We can see from the output above that we are able to take the mean for our random sample (mean = 1.358924) and logical vectors (mean = 0.9). However, as expected, we cannot take the means of our character and factor vectors since they are not numerical.
 
 We can attempt to use the 'as.numeric' function to convert the variables into numerical variables and then take the mean:
 
 ```{r convert_numeric}
 
+#Observing my vectors converted using 'as.numeric':
 as.numeric(new_df$vec_log)
 as.numeric(new_df$vec_char)
 as.numeric(new_df$vec_factor)
 
+#Getting the means now using 'as.numeric':
 mean(as.numeric(pull(new_df, vec_log)))
 mean(as.numeric(pull(new_df, vec_char)))
 mean(as.numeric(pull(new_df, vec_factor)))
 
 ```
 
-####### confirm in office hours
 ####### says to use chunk but not output???
 
-As we can see, the 'as.numeric' function was able to convert the logical vector elements into 0 or 1 (values corresponding to 'TRUE' or 'FALSE') and the factor vector elements to 1, 2, or 3 (values corresponding to each of the three levels). The means for the logical and factor vectors, after converting to numeric, we see they have means of 0.7 and 2.1, respectively. However, we see that the character vector values still remain as 'NA', and so does the mean value. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
+As we can see, the 'as.numeric' function was able to convert the logical vector elements into 1 or 0 (values corresponding to 'TRUE' or 'FALSE', respectively) and the factor vector elements to 1, 2, or 3 (values corresponding to each of the three categorical levels). The means for the logical and factor vectors, after converting to numeric, have means of 0.9 and 2.1, respectively. However, that the character vector values still remain as 'NA', and so does their mean value. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
+
+## The End :) Have a wonderful day!
 
