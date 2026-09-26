@@ -105,7 +105,6 @@ Per the assignment instructions, we can attempt to use the 'as.numeric' function
 ```{r convert_numeric, results='hide'}
 
 #Observing my vectors converted using 'as.numeric':
-as.numeric(pull(new_df, vec_sample))
 as.numeric(pull(new_df, vec_log))
 as.numeric(pull(new_df, vec_char))
 as.numeric(pull(new_df, vec_factor))
@@ -113,7 +112,7 @@ as.numeric(pull(new_df, vec_factor))
 
 **Consider that the following description is based on the output I was able to observe. However, per the assignment instructions, the final version of this RMarkdown does not show the code chunk output (removed using 'results = hide'):**
 
-What happens from using the code above is that the 'as.numeric' function converts the vector elements into numerical elements. This works for the random sample, logical, and factor vectors, but not for the character vector. The random sample elements were kept as numeric. The logical vector elements converted into numeric 1 or 0 (values corresponding to 'TRUE' and 'FALSE', respectively) and the factor vector elements to numeric 1, 2, or 3 values (corresponding to each of the three categorical levels). However, the character vector values still remain as 'NA'. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
+What happens from using the code above is that the 'as.numeric' function converts the vector elements into numerical elements. This works for the logical and factor vectors, but not for the character vector. The logical vector elements converted into numeric 1 or 0 (values corresponding to 'TRUE' and 'FALSE', respectively) and the factor vector elements to numeric 1, 2, or 3 values (corresponding to each of the three categorical levels). However, the character vector values still remain as 'NA'. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
 
 ## The End :) Have a wonderful day!
 
