@@ -22,28 +22,32 @@ data("penguins", package = "palmerpenguins")
 After the data has been loaded, we can explore the 'penguins' data set:
 
 ```{r exploring_penguins}
-penguins #General observation of the data frame
+penguins #General observation of the data frame.
 
 nrow(penguins) #Obtaining number of rows
 ncol(penguins) #Obtaining number of columns
 
 #To obtain the mean value of the flipper length, we use the pull function and remove the missing values using 'na.rm':
-
 mean(pull(penguins, flipper_length_mm), na.rm = TRUE)
-
 sd(pull(penguins, flipper_length_mm), na.rm = TRUE)
+
+#Also analyzing bill length, since this is an important variable that we will be analyzing:
+mean(pull(penguins, bill_length_mm), na.rm = TRUE)
+sd(pull(penguins, bill_length_mm), na.rm = TRUE)
+
+#Using inline R code below...
+
 ```
 
-#### what do we say about 'important values of variables'?
+**Description (using inline R code):** We see that the 'penguins' data set is a tibble containing `r nrow(penguins)` observations and `r ncol(penguins)` variables. Each observation corresponds to a penguin, whereas the variables describe their location (categorical 'island' variable), their species (categorical), sex (categorical), year (numeric), and physical characteristics of each penguin, including their bills' length and depth (millimeters; numeric), their flippers' length (millimeters; numeric), and overall body mass (grams; numeric).
 
-**Description:** We see that the 'penguins' data set is a tibble containing 344 observations and 8 variables, as confirmed by the 'nrow' and 'ncol' functions (344 rows and 8 columns). Each observation corresponds to a penguin, whereas the variables describe their location ('island' variable), their species, sex, year of  physical characteristics of each penguin, including their bills' length and depth (mm), their flippers' length (mm), and overall body mass (g).
+Additionally, after removing missing values (using 'na.rm') we see that the mean flipper length for all observations in the data set is `r mean(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm, with a standard deviation of `r sd(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm.
 
-Additionally, we see that the mean flipper length for all observations in the data set is 200.9152 mm.
+Moreover, after removing missing values we see that the mean bill length for all observations in the data set is `r mean(pull(penguins, bill_length_mm), na.rm = TRUE)` mm, with a standard deviation of `r `sd(pull(penguins, bill_length_mm), na.rm = TRUE)` mm.
 
+**Visualizing the data**
 
-### general descriptors of the flipper length and bill mean sd
-
-We can also create a scatter plot of flipper length (y) vs. bill length (x):
+We can also create a scatter plot of flipper length (y) vs. bill length (x). Note that ggplot automatically removes NA values when creating the scatter plot:
 
 ```{r scatter_plot_penguins}
 #Using ggplot (part of 'tidyverse' package). Note that ggplot automatically removes NA values from scatter plot:
@@ -53,11 +57,12 @@ ggplot(penguins, aes(x = bill_length_mm,
                      color = species)) +  #Coloring per 'species' variable
     geom_point() +
   
-#Adding labels to my scatter plot (I know this code per previous experience with ggplot in another class)
+#Adding labels to my scatter plot (I know this code syntax per previous experience with ggplot in another class and work)
   
   labs(title = "Penguin Flipper Length vs. Bill Length",
        x = "Bill Length (mm)",
-       y = "Flipper Length (mm)") +
+       y = "Flipper Length (mm)",
+       color = "Penguin Species") +
   
   theme(plot.title = element_text(hjust = 0.5)) #Centering my title
 
@@ -67,19 +72,12 @@ ggsave(filename = "DSI_HW1_Problem1.jpg")
 
 ```
 
-#### do we need to address the missing values???
-#### okay extra ggplot things considering my previous class????
-#### email reminding him older R version. to Gustavo???
-
 ## Problem 2
 
 We can create a data frame using the 'tibble' function (part of the 'tidyverse' package):
 
-####### do we need to take 'seed'? to make sure means remain consistent?
-
-
 ```{r creating_df}
-set.seed(0)
+set.seed(0) #Setting seed to make sure you are getting the same output as me
 
 new_df = tibble(
   vec_sample = rnorm(10, mean = 1), #Random sample of 10 and mean equal to 1
@@ -89,7 +87,7 @@ new_df = tibble(
 )
 ```
 
-After we have created our desired data frame, we can attempt to take the mean of each newly-created variable:
+After we have created our desired data frame, we can attempt to take the mean of each newly-created vector variable:
 
 ```{r taking_means}
 
@@ -100,27 +98,22 @@ mean(pull(new_df, vec_factor))
 
 ```
 
-We can see from the output above that we are able to take the mean for our random sample (mean = 1.358924) and logical vectors (mean = 0.9). However, as expected, we cannot take the means of our character and factor vectors since they are not numerical.
+We can see from the output above that we are able to take the mean for our random sample (mean = 1.36) and logical vectors (mean = 0.9; since it is taking Boolean values to be either '1' or '0' for TRUE or FALSE, respectively). However, as expected, we cannot take the means of our character and factor vectors since they are not numerical.
 
-We can attempt to use the 'as.numeric' function to convert the variables into numerical variables and then take the mean:
+Per the assignment instructions, we can attempt to use the 'as.numeric' function to convert the variables into numerical variables and then take the mean:
 
-```{r convert_numeric}
+```{r convert_numeric, results='hide'}
 
 #Observing my vectors converted using 'as.numeric':
-as.numeric(new_df$vec_log)
-as.numeric(new_df$vec_char)
-as.numeric(new_df$vec_factor)
-
-#Getting the means now using 'as.numeric':
-mean(as.numeric(pull(new_df, vec_log)))
-mean(as.numeric(pull(new_df, vec_char)))
-mean(as.numeric(pull(new_df, vec_factor)))
-
+as.numeric(pull(new_df, vec_sample))
+as.numeric(pull(new_df, vec_log))
+as.numeric(pull(new_df, vec_char))
+as.numeric(pull(new_df, vec_factor))
 ```
 
-####### says to use chunk but not output???
+**Consider that the following description is based on the output I was able to observe. However, per the assignment instructions, the final version of this RMarkdown does not show the code chunk output (removed using 'results = hide'):**
 
-As we can see, the 'as.numeric' function was able to convert the logical vector elements into 1 or 0 (values corresponding to 'TRUE' or 'FALSE', respectively) and the factor vector elements to 1, 2, or 3 (values corresponding to each of the three categorical levels). The means for the logical and factor vectors, after converting to numeric, have means of 0.9 and 2.1, respectively. However, that the character vector values still remain as 'NA', and so does their mean value. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
+What happens from using the code above is that the 'as.numeric' function converts the vector elements into numerical elements. This works for the random sample, logical, and factor vectors, but not for the character vector. The random sample elements were kept as numeric. The logical vector elements converted into numeric 1 or 0 (values corresponding to 'TRUE' and 'FALSE', respectively) and the factor vector elements to numeric 1, 2, or 3 values (corresponding to each of the three categorical levels). However, the character vector values still remain as 'NA'. This makes sense since there is no standardized logic or order for character elements to convert them to numerical elements.
 
 ## The End :) Have a wonderful day!
 
