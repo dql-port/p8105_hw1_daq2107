@@ -43,7 +43,7 @@ sd(pull(penguins, bill_length_mm), na.rm = TRUE)
 
 Additionally, after removing missing values (using 'na.rm') we see that the mean flipper length for all observations in the data set is `r mean(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm, with a standard deviation of `r sd(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm.
 
-Moreover, after removing missing values we see that the mean bill length for all observations in the data set is `r mean(pull(penguins, bill_length_mm), na.rm = TRUE)` mm, with a standard deviation of `r `sd(pull(penguins, bill_length_mm), na.rm = TRUE)` mm.
+Moreover, after removing missing values we see that the mean bill length for all observations in the data set is `r mean(pull(penguins, bill_length_mm), na.rm = TRUE)` mm, with a standard deviation of `r sd(pull(penguins, bill_length_mm), na.rm = TRUE)` mm.
 
 **Visualizing the data**
 
